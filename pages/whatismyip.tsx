@@ -10,8 +10,9 @@ const fetcher = url => axios.get(url).then(res => res.data)
 
 function useCurrentIp() {
     const {data, error} = useSWR('https://jsonip.com', fetcher)
+    const {ip} = data
     return {
-        ip: data.ip,
+        ip,
         isLoading: !error && !data,
         isError: error
     }
