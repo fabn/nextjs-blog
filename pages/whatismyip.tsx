@@ -1,8 +1,8 @@
+import React, {useEffect, useState} from "react";
 import Head from 'next/head'
 import Layout, {siteTitle} from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
-import {useEffect, useState} from "react";
 
 function MyIpAddress() {
     const [ip, setIp] = useState('127.0.0.1');
