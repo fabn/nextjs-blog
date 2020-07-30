@@ -9,7 +9,7 @@ import axios from 'axios'
 const fetcher = url => axios.get(url).then(res => res.data)
 
 function useCurrentIp() {
-    const {data, error} = useSWR('https://jsonip.com', fetcher)
+    const {data = {}, error} = useSWR('https://jsonip.com', fetcher)
     return {
         ip: data.ip,
         isLoading: !error && !data,
