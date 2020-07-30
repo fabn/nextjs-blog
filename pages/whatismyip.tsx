@@ -11,17 +11,17 @@ const fetcher = url => axios.get(url).then(res => res.data)
 function useCurrentIp() {
     const {data, error} = useSWR('https://jsonip.com', fetcher)
     return {
-        data,
+        ip: data.ip,
         isLoading: !error && !data,
         isError: error
     }
 }
 
 function MyIpAddress() {
-    const {data, isLoading, isError} = useCurrentIp()
+    const {ip, isLoading, isError} = useCurrentIp()
     if (isLoading) return <h4>Loading data...</h4>
     if (isError) return <h4>Error while fetching</h4>
-    return <h4>Your Ip address is: <code>{data.ip}</code></h4>
+    return <h4>Your Ip address is: <code>{ip}</code></h4>
 }
 
 export default function WhatIsMyIp() {
