@@ -3,16 +3,25 @@ import Head from 'next/head'
 import Layout, {siteTitle} from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
+import useSWR from 'swr'
+import axios from 'axios'
+
+const fetcher = url => axios.get(url).then(res => res.data)
+
+function useCurrentIp() {
+    const {data, error} = useSWR('https://jsonip.com', fetcher)
+    return {
+        data,
+        isLoading: !error && !data,
+        isError: error
+    }
+}
 
 function MyIpAddress() {
-    const [ip, setIp] = useState('127.0.0.1');
-    useEffect(() => {
-        fetch('https://jsonip.com').then(r => r.json()).then(data => {
-            console.log('Got ip address info', data);
-            setIp(data.ip);
-        })
-    }, []);
-    return <h4>Your Ip address is: <code>{ip}</code></h4>
+    const {data, isLoading, isError} = useCurrentIp()
+    if (isLoading) return <h4>Loading data...</h4>
+    if (isError) return <h4>Error while fetching</h4>
+    return <h4>Your Ip address is: <code>{data.ip}</code></h4>
 }
 
 export default function WhatIsMyIp() {
