@@ -9,7 +9,7 @@ export default function Home({ allPostsData }) {
   return (
     <Layout home>
       <Head>
-        <title>{siteTitle}</title>
+        <title>[DEV] - {siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
         <p>Experiment with Next.js, test a <Link href={'whatismyip'}><a>custom page</a></Link></p>
