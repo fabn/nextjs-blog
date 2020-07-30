@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Head from 'next/head'
 import Layout, {siteTitle} from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 import useSWR from 'swr'
 import axios from 'axios'
+import {Button, Dimmer, Divider, Loader, Segment} from "semantic-ui-react";
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
 function useCurrentIp() {
-    const {data, error} = useSWR('https://jsonip.com', fetcher)
+    const {data = {}, error} = useSWR('https://jsonip.com', fetcher)
     return {
         ip: data.ip,
         isLoading: !error && !data,
@@ -18,10 +18,15 @@ function useCurrentIp() {
 }
 
 function MyIpAddress() {
-    const {ip, isLoading, isError} = useCurrentIp()
-    if (isLoading) return <h4>Loading data...</h4>
-    if (isError) return <h4>Error while fetching</h4>
-    return <h4>Your Ip address is: <code>{ip}</code></h4>
+    const {ip, isLoading} = useCurrentIp()
+
+    return <Dimmer.Dimmable as={Segment} dimmed={isLoading} color={'red'}>
+        <Dimmer active={isLoading} inverted>
+            <Loader>Loading</Loader>
+        </Dimmer>
+
+        Your current ip address is: <code>{ip}</code>
+    </Dimmer.Dimmable>
 }
 
 export default function WhatIsMyIp() {
@@ -30,15 +35,14 @@ export default function WhatIsMyIp() {
             <Head>
                 <title>{siteTitle}</title>
             </Head>
-            <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-                <h2 className={utilStyles.headingLg}>What Is My Ip Address</h2>
-                <MyIpAddress/>
-            </section>
-            <section>
-                <h3>
-                    <Link href={'/'}><a>Go back to home page</a></Link>
-                </h3>
-            </section>
+
+            <MyIpAddress/>
+
+            <Divider/>
+
+            <Link href={'/'}>
+                <Button fluid as='a'>Go back to home page</Button>
+            </Link>
         </Layout>
     )
 }
