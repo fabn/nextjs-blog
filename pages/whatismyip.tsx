@@ -5,6 +5,7 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import axios from 'axios'
 import {Button, Dimmer, Divider, Loader, Segment} from "semantic-ui-react";
+import { FaBeer } from 'react-icons/fa';
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -37,6 +38,10 @@ export default function WhatIsMyIp() {
             </Head>
 
             <MyIpAddress/>
+
+            <Segment textAlign='center'>
+                <FaBeer size={250} color={'red'} title={'beer'}/>
+            </Segment>
 
             <Divider/>
 
